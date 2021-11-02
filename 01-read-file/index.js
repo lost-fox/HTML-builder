@@ -1,9 +1,12 @@
 const fs = require('fs');
 const path = require('path');
-const url = path.join(__dirname, 'text.txt');
 
-fs.readFile(
-  path.join(url), 'utf-8', (err, data) => {
-    if (err) throw err;
+const stream = new fs.ReadStream(path.join(__dirname,'text.txt'), 'utf-8');
+
+stream.on('readable', function(){
+  const data = stream.read();
+  if(data != null){
     console.log(data);
-  });
+  }
+  
+});
