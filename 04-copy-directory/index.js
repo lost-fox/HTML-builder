@@ -9,6 +9,7 @@ function callback(err) {
 }
 
 fs.mkdir(folderName, { recursive: true }, callback);
+
 fs.readdir(folderPath, (err, data) => {
   if (err) throw err;
   for (let i = 0; i < data.length; i++) {
@@ -19,4 +20,17 @@ fs.readdir(folderPath, (err, data) => {
     );
   }
   console.log('Copy DONE!');
+});
+
+fs.readdir(folderName, (err, file) => {
+  if (err) throw err;
+  for (let i = 0; i < file.length; i++) {
+    fs.access(path.join(folderPath, file[i]), function (error) {
+      if (error) {
+        fs.unlink(path.join(folderName, file[i]), (err) => {
+          if (err) throw err;
+        });
+      }
+    });
+  }
 });
